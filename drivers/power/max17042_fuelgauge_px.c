@@ -1886,7 +1886,7 @@ fg_i2c_probe(struct i2c_client *client,  const struct i2c_device_id *id)
 
 #if defined(CONFIG_TARGET_LOCALE_KOR)
 	chip->battery.name = "fuelgauge";
-	chip->battery.type = POWER_SUPPLY_TYPE_BATTERY;
+	chip->battery.type = POWER_SUPPLY_TYPE_UNKNOWN;
 	chip->battery.get_property = max17042_get_property;
 	chip->battery.properties = max17042_battery_props;
 	chip->battery.num_properties = ARRAY_SIZE(max17042_battery_props);

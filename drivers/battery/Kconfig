@@ -83,6 +83,15 @@ config BATTERY_SAMSUNG_P1X
 	help
 	 Say Y to include support for samsung battery driver for P1x.
 
+config SAMSUNG_LPM_MODE
+	bool "Off charging mode support in sec battery driver"
+	default Y
+	help
+	 Say Y to include support for sec off charging support
+	 This value defiend at bootloader.
+	 Before enable this feature,
+	 implement power off charging in the bootloader.
+
 
 # Fuel Gauge
 
