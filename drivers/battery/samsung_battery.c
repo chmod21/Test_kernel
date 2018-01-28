@@ -61,27 +61,14 @@ static char *supply_list[] = {
 };
 
 
-#if defined(CONFIG_TARGET_LOCALE_KOR) || defined(CONFIG_MACH_M0_CTC)
+#if defined(CONFIG_TARGET_LOCALE_KOR) || defined(CONFIG_MACH_M0_CTC)\
+        || defined(CONFIG_MACH_T0_CHN_CTC)
 static void battery_error_control(struct battery_info *info);
 #endif
 
 /* Get LP charging mode state */
 unsigned int lpcharge;
-/* #if defined(CONFIG_MACH_M0)
 static int battery_get_lpm_state(char *str)
-{
-	if (strncmp(str, "1", 1) == 0)
-		lpcharge = 1;
-
-	pr_info("%s: Low power charging mode: %d\n", __func__, lpcharge);
-
-	return lpcharge;
-}
-__setup("lpcharge=", battery_get_lpm_state);
-#else */
-
-/* For KitKat bootloader compatibility */
-static int bootloader_get_lpm_state(char *str)
 {
 	if (strncmp(str, "charger", 7) == 0)
 		lpcharge = 1;
@@ -90,8 +77,20 @@ static int bootloader_get_lpm_state(char *str)
 
 	return lpcharge;
 }
-__setup("androidboot.mode=", bootloader_get_lpm_state);
-//#endif
+__setup("androidboot.mode=", battery_get_lpm_state);
+
+/* For KitKat bootloader compatibility */
+static int bootloader_get_lpm_state(char *str)
+{
+	if (strncmp(str, "1", 1) == 0)
+		lpcharge = 1;
+
+	pr_info("%s: Low power charging mode: %d\n", __func__, lpcharge);
+
+	return lpcharge;
+}
+__setup("lpcharge=", bootloader_get_lpm_state);
+
 EXPORT_SYMBOL(lpcharge);
 
 /* Cable type from charger or adc */
