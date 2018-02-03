@@ -21,8 +21,8 @@
 #define aid_60nit				0x18
 #define aid_50nit				0x0F
 #define aid_40nit				0x0A
-#define aid_30nit				0x06
-#define aid_20nit				0x03
+#define aid_30nit				0x05
+#define aid_20nit				0x01
 #define AOR40_BASE_188		202
 #define AOR40_BASE_186		215
 #define AOR40_BASE_184		230
