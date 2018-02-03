@@ -347,9 +347,12 @@ CHECK		= sparse
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
+OPTS	        = -mcpu=cortex-a9 -mtune=cortex-a9 -fmodulo-sched -fmodulo-sched-allow-regmoves -ftree-vectorize -ftree-loop-vectorize -ftree-loop-distribute-patterns -ftree-slp-vectorize -fvect-cost-model -ftree-partial-pre -fgcse-after-reload -fgcse-lm -fgcse-sm -fsched-spec-load -ffast-math -fsingle-precision-constant -fpredictive-commoning
+GCC6WARNINGS	= -Wno-bool-compare -Wno-misleading-indentation -Wno-format -Wno-logical-not-parentheses
+GCC7WARNINGS	= $(GCC6WARNINGS) -Wno-int-in-bool-context -Wno-memset-elt-size -Wno-parentheses -Wno-bool-operation -Wno-duplicate-decl-specifier -Wno-stringop-overflow -Wno-format-truncation -Wno-format-overflow -fno-modulo-sched
 CFLAGS_MODULE   =
 AFLAGS_MODULE   =
-LDFLAGS_MODULE  =
+LDFLAGS_MODULE  = --strip-debug
 CFLAGS_KERNEL	=
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
@@ -559,6 +562,24 @@ endif # $(dot-config)
 # This allow a user to issue only 'make' to build a kernel including modules
 # Defaults to vmlinux, but the arch makefile usually adds further targets
 all: vmlinux
+
+# Flags by @JustArchi
+
+# Cortex A9 optimization
+KBUILD_CFLAGS	+= -marm -march=armv7-a -mcpu=cortex-a9 \
+		   -mtune=cortex-a9 -mfloat-abi=softfp -mfpu=neon
+
+# Main optimization level
+KBUILD_CFLAGS	+= -O3
+
+# LDFLAGS
+LDFLAGS 	+= -O3 --sort-common
+
+# Other flags
+KBUILD_CFLAGS	+= -DNDEBUG -fsection-anchors -funsafe-loop-optimizations \
+		   -fivopts -ftree-loop-im -ftree-loop-ivcanon -funswitch-loops \
+		   -frename-registers -fgcse-sm -fgcse-las -fweb -ftracer \
+		   -fipa-pta -fmodulo-sched -fmodulo-sched-allow-regmoves
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os
